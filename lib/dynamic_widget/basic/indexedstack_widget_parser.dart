@@ -1,22 +1,16 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class IndexedStackWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
-
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return IndexedStack(
       index: map.containsKey("index") ? map["index"] : 0,
-      alignment: map.containsKey("alignment")
-          ? parseAlignment(map["alignment"])!
-          : AlignmentDirectional.topStart,
-      textDirection: map.containsKey("textDirection")
-          ? parseTextDirection(map["textDirection"])
-          : null,
-      children: DynamicWidgetBuilder.buildWidgets(
-          map['children'], buildContext, listener),
+      alignment: map.containsKey("alignment") ? parseAlignment(map["alignment"])! : AlignmentDirectional.topStart,
+      textDirection: map.containsKey("textDirection") ? parseTextDirection(map["textDirection"]) : null,
+      children: sl<DynamicWidgetBuilder>().buildWidgets(map['children'], buildContext, listener),
     );
   }
 
@@ -32,11 +26,8 @@ class IndexedStackWidgetParser extends WidgetParser {
       "alignment": realWidget.alignment != null
           ? exportAlignment(realWidget.alignment as Alignment?)
           : AlignmentDirectional.topStart,
-      "textDirection": realWidget.textDirection != null
-          ? exportTextDirection(realWidget.textDirection)
-          : null,
-      "children":
-          DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext)
+      "textDirection": realWidget.textDirection != null ? exportTextDirection(realWidget.textDirection) : null,
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext)
     };
   }
 

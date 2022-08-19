@@ -1,23 +1,23 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
 
 class PageViewWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
-
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     var scrollDirection = Axis.vertical;
-    if (map.containsKey("scrollDirection") &&
-        "horizontal" == map["scrollDirection"]) {
+    if (map.containsKey("scrollDirection") && "horizontal" == map["scrollDirection"]) {
       scrollDirection = Axis.horizontal;
     }
     return PageView(
       scrollDirection: scrollDirection,
       reverse: map.containsKey("reverse") ? map["reverse"] : false,
-      pageSnapping:
-          map.containsKey("pageSnapping") ? map["pageSnapping"] : true,
-      children: DynamicWidgetBuilder.buildWidgets(
-          map['children'], buildContext, listener),
+      pageSnapping: map.containsKey("pageSnapping") ? map["pageSnapping"] : true,
+      children: sl<DynamicWidgetBuilder>().buildWidgets(
+        map['children'],
+        buildContext,
+        listener,
+      ),
     );
   }
 
@@ -37,8 +37,7 @@ class PageViewWidgetParser extends WidgetParser {
       "scrollDirection": scrollDirection,
       "reverse": realWidget.reverse,
       "pageSnapping": realWidget.pageSnapping,
-      "children":
-          DynamicWidgetBuilder.exportWidgets(children.children, buildContext)
+      "children": DynamicWidgetBuilder.exportWidgets(children.children, buildContext)
     };
   }
 

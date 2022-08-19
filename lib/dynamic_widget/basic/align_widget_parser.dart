@@ -1,23 +1,17 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class AlignWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Align(
-      alignment: map.containsKey("alignment")
-          ? parseAlignment(map["alignment"])!
-          : Alignment.center,
-      widthFactor: map.containsKey("widthFactor")
-          ? map["widthFactor"]?.toDouble()
-          : null,
-      heightFactor: map.containsKey("heightFactor")
-          ? map["heightFactor"]?.toDouble()
-          : null,
-      child: DynamicWidgetBuilder.buildFromMap(
-          map["child"], buildContext, listener),
+      alignment: map.containsKey("alignment") ? parseAlignment(map["alignment"])! : Alignment.center,
+      widthFactor: map.containsKey("widthFactor") ? map["widthFactor"]?.toDouble() : null,
+      heightFactor: map.containsKey("heightFactor") ? map["heightFactor"]?.toDouble() : null,
+      child: sl<DynamicWidgetBuilder>().buildFromMap(map["child"], buildContext, listener),
     );
   }
 

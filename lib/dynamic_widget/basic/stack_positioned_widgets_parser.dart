@@ -1,14 +1,13 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class PositionedWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Positioned(
-      child: DynamicWidgetBuilder.buildFromMap(
-          map["child"], buildContext, listener)!,
+      child: sl<DynamicWidgetBuilder>().buildFromMap(map["child"], buildContext, listener)!,
       top: map.containsKey("top") ? map["top"]?.toDouble() : null,
       right: map.containsKey("right") ? map["right"]?.toDouble() : null,
       bottom: map.containsKey("bottom") ? map["bottom"]?.toDouble() : null,
@@ -42,22 +41,17 @@ class PositionedWidgetParser extends WidgetParser {
 
 class StackWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
-
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Stack(
-      alignment: map.containsKey("alignment")
-          ? parseAlignment(map["alignment"])!
-          : AlignmentDirectional.topStart,
-      textDirection: map.containsKey("textDirection")
-          ? parseTextDirection(map["textDirection"])
-          : null,
+      alignment: parseAlignment(map["alignment"]) ?? AlignmentDirectional.topStart,
+      textDirection: map.containsKey("textDirection") ? parseTextDirection(map["textDirection"]) : null,
       fit: map.containsKey("fit") ? parseStackFit(map["fit"])! : StackFit.loose,
-      clipBehavior: map.containsKey("clipBehavior")
-          ? parseClip(map["clipBehavior"])!
-          : Clip.hardEdge,
-      children: DynamicWidgetBuilder.buildWidgets(
-          map['children'], buildContext, listener),
+      clipBehavior: map.containsKey("clipBehavior") ? parseClip(map["clipBehavior"])! : Clip.hardEdge,
+      children: sl<DynamicWidgetBuilder>().buildWidgets(
+        map['children'],
+        buildContext,
+        listener,
+      ),
     );
   }
 
@@ -69,14 +63,13 @@ class StackWidgetParser extends WidgetParser {
     var realWidget = widget as Stack;
     return <String, dynamic>{
       "type": "Stack",
-      "alignment": realWidget.alignment is AlignmentDirectional ?
-                    exportAlignmentDirectional(realWidget.alignment as AlignmentDirectional)
-                      : exportAlignment(realWidget.alignment as Alignment),
+      "alignment": realWidget.alignment is AlignmentDirectional
+          ? exportAlignmentDirectional(realWidget.alignment as AlignmentDirectional)
+          : exportAlignment(realWidget.alignment as Alignment),
       "textDirection": exportTextDirection(realWidget.textDirection),
       "fit": exportStackFit(realWidget.fit),
       "clipBehavior": exportClipBehavior(realWidget.clipBehavior),
-      "children":
-          DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext)
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext)
     };
   }
 

@@ -1,35 +1,26 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class WrapWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Wrap(
-      direction: map.containsKey("direction")
-          ? parseAxis(map["direction"])
-          : Axis.horizontal,
-      alignment: map.containsKey("alignment")
-          ? parseWrapAlignment(map["alignment"])
-          : WrapAlignment.start,
+      direction: map.containsKey("direction") ? parseAxis(map["direction"]) : Axis.horizontal,
+      alignment: map.containsKey("alignment") ? parseWrapAlignment(map["alignment"]) : WrapAlignment.start,
       spacing: map.containsKey("spacing") ? map["spacing"]?.toDouble() : 0.0,
-      runAlignment: map.containsKey("runAlignment")
-          ? parseWrapAlignment(map["runAlignment"])
-          : WrapAlignment.start,
-      runSpacing:
-          map.containsKey("runSpacing") ? map["runSpacing"]?.toDouble() : 0.0,
+      runAlignment: map.containsKey("runAlignment") ? parseWrapAlignment(map["runAlignment"]) : WrapAlignment.start,
+      runSpacing: map.containsKey("runSpacing") ? map["runSpacing"]?.toDouble() : 0.0,
       crossAxisAlignment: map.containsKey("crossAxisAlignment")
           ? parseWrapCrossAlignment(map["crossAxisAlignment"])
           : WrapCrossAlignment.start,
-      textDirection: map.containsKey("textDirection")
-          ? parseTextDirection(map["textDirection"])
-          : null,
+      textDirection: map.containsKey("textDirection") ? parseTextDirection(map["textDirection"]) : null,
       verticalDirection: map.containsKey("verticalDirection")
           ? parseVerticalDirection(map["verticalDirection"])
           : VerticalDirection.down,
-      children: DynamicWidgetBuilder.buildWidgets(
-          map['children'], buildContext, listener),
+      children: sl<DynamicWidgetBuilder>().buildWidgets(map['children'], buildContext, listener),
     );
   }
 
@@ -41,21 +32,15 @@ class WrapWidgetParser extends WidgetParser {
     var realWidget = widget as Wrap;
     return <String, dynamic>{
       "type": "Wrap",
-      "direction":
-          realWidget.direction == Axis.horizontal ? "horizontal" : "vertical",
+      "direction": realWidget.direction == Axis.horizontal ? "horizontal" : "vertical",
       "alignment": exportWrapAlignment(realWidget.alignment),
       "spacing": realWidget.spacing,
       "runAlignment": exportWrapAlignment(realWidget.runAlignment),
       "runSpacing": realWidget.runSpacing,
-      "crossAxisAlignment":
-          exportWrapCrossAlignment(realWidget.crossAxisAlignment),
-      "textDirection": realWidget.textDirection != null
-          ? exportTextDirection(realWidget.textDirection)
-          : null,
-      "verticalDirection":
-          realWidget.verticalDirection == VerticalDirection.up ? "up" : "down",
-      "children":
-          DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext)
+      "crossAxisAlignment": exportWrapCrossAlignment(realWidget.crossAxisAlignment),
+      "textDirection": realWidget.textDirection != null ? exportTextDirection(realWidget.textDirection) : null,
+      "verticalDirection": realWidget.verticalDirection == VerticalDirection.up ? "up" : "down",
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext)
     };
   }
 

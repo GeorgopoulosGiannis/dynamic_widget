@@ -6,39 +6,27 @@ import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:soft1_presentation/soft1_presentation.dart';
 
 class GridViewWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     var scrollDirection = Axis.vertical;
-    if (map.containsKey("scrollDirection") &&
-        "horizontal" == map["scrollDirection"]) {
+    if (map.containsKey("scrollDirection") && "horizontal" == map["scrollDirection"]) {
       scrollDirection = Axis.horizontal;
     }
     int? crossAxisCount = map['crossAxisCount'];
     bool? reverse = map.containsKey("reverse") ? map['reverse'] : false;
     bool? shrinkWrap = map.containsKey("shrinkWrap") ? map["shrinkWrap"] : false;
-    double? cacheExtent =
-        map.containsKey("cacheExtent") ? map["cacheExtent"]?.toDouble() : 0.0;
-    EdgeInsetsGeometry? padding = map.containsKey('padding')
-        ? parseEdgeInsetsGeometry(map['padding'])
-        : null;
-    double? mainAxisSpacing = map.containsKey('mainAxisSpacing')
-        ? map['mainAxisSpacing']?.toDouble()
-        : 0.0;
-    double? crossAxisSpacing = map.containsKey('crossAxisSpacing')
-        ? map['crossAxisSpacing']?.toDouble()
-        : 0.0;
-    double? childAspectRatio = map.containsKey('childAspectRatio')
-        ? map['childAspectRatio']?.toDouble()
-        : 1.0;
-    var children = DynamicWidgetBuilder.buildWidgets(
-        map['children'], buildContext, listener);
+    double? cacheExtent = map.containsKey("cacheExtent") ? map["cacheExtent"]?.toDouble() : 0.0;
+    EdgeInsetsGeometry? padding = map.containsKey('padding') ? parseEdgeInsetsGeometry(map['padding']) : null;
+    double? mainAxisSpacing = map.containsKey('mainAxisSpacing') ? map['mainAxisSpacing']?.toDouble() : 0.0;
+    double? crossAxisSpacing = map.containsKey('crossAxisSpacing') ? map['crossAxisSpacing']?.toDouble() : 0.0;
+    double? childAspectRatio = map.containsKey('childAspectRatio') ? map['childAspectRatio']?.toDouble() : 1.0;
+    var children = sl<DynamicWidgetBuilder>().buildWidgets(map['children'], buildContext, listener);
 
     var pageSize = map.containsKey("pageSize") ? map["pageSize"] : 10;
-    var loadMoreUrl =
-        map.containsKey("loadMoreUrl") ? map["loadMoreUrl"] : null;
+    var loadMoreUrl = map.containsKey("loadMoreUrl") ? map["loadMoreUrl"] : null;
     var isDemo = map.containsKey("isDemo") ? map["isDemo"] : false;
 
     GridViewParams params = GridViewParams(
@@ -77,17 +65,14 @@ class GridViewWidgetParser extends WidgetParser {
       "reverse": realWidget._params.reverse ?? false,
       "shrinkWrap": realWidget._params.shrinkWrap ?? false,
       "cacheExtent": realWidget._params.cacheExtent ?? 0.0,
-      "padding": padding != null
-          ? "${padding.left},${padding.top},${padding.right},${padding.bottom}"
-          : null,
+      "padding": padding != null ? "${padding.left},${padding.top},${padding.right},${padding.bottom}" : null,
       "mainAxisSpacing": realWidget._params.mainAxisSpacing ?? 0.0,
       "crossAxisSpacing": realWidget._params.crossAxisSpacing ?? 0.0,
       "childAspectRatio": realWidget._params.childAspectRatio ?? 1.0,
       "pageSize": realWidget._params.pageSize ?? 10,
       "loadMoreUrl": realWidget._params.loadMoreUrl ?? null,
       "isDemo": realWidget._params.isDemo ?? false,
-      "children": DynamicWidgetBuilder.exportWidgets(
-          realWidget._params.children!, buildContext)
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget._params.children!, buildContext)
     };
   }
 
@@ -131,9 +116,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
       return;
     }
     _scrollController.addListener(() {
-      if (!loadCompleted &&
-          _scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent) {
+      if (!loadCompleted && _scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _getMoreData();
       }
     });
@@ -143,8 +126,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
     if (!isPerformingRequest) {
       setState(() => isPerformingRequest = true);
       var jsonString = _params.isDemo! ? await fakeRequest() : await doRequest();
-      var buildWidgets = DynamicWidgetBuilder.buildWidgets(
-          jsonDecode(jsonString), widget._buildContext, null);
+      var buildWidgets = sl<DynamicWidgetBuilder>().buildWidgets(jsonDecode(jsonString), widget._buildContext, null);
       setState(() {
         if (buildWidgets.isEmpty) {
           loadCompleted = true;
@@ -237,8 +219,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
   doRequest() async {
     // Await the http get response, then decode the json-formatted responce.
     try {
-      var response = await http.get(Uri.parse(getLoadMoreUrl(
-          _params.loadMoreUrl, _items.length, _params.pageSize)!));
+      var response = await http.get(Uri.parse(getLoadMoreUrl(_params.loadMoreUrl, _items.length, _params.pageSize)!));
       if (response.statusCode == 200) {
         return response.body;
       }

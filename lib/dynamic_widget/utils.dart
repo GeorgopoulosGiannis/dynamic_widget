@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:dynamic_widget/dynamic_widget/drop_cap_text.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
 
 TextAlign parseTextAlign(String? textAlignString) {
   //left the system decide
@@ -74,7 +75,7 @@ TextOverflow? parseTextOverflow(String? textOverflowString) {
 }
 
 String? exportTextOverflow(TextOverflow? textOverflow) {
-  if(textOverflow == null){
+  if (textOverflow == null) {
     return null;
   }
   String rt = "ellipsis";
@@ -240,8 +241,7 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   String? fontFamily = map['fontFamily'];
   double? fontSize = map['fontSize']?.toDouble();
   String? fontWeight = map['fontWeight'];
-  FontStyle fontStyle =
-      'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
+  FontStyle fontStyle = 'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
 
   return TextStyle(
     color: parseHexColor(color),
@@ -260,9 +260,7 @@ Map<String, dynamic>? exportTextStyle(TextStyle? textStyle) {
   }
 
   return <String, dynamic>{
-    "color": textStyle.color != null
-        ? textStyle.color!.value.toRadixString(16)
-        : null,
+    "color": textStyle.color != null ? textStyle.color!.value.toRadixString(16) : null,
     "debugLabel": textStyle.debugLabel,
     "decoration": exportTextDecoration(textStyle.decoration),
     "fontSize": textStyle.fontSize,
@@ -374,8 +372,7 @@ BoxConstraints parseBoxConstraints(Map<String, dynamic>? map) {
 
 EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? edgeInsetsGeometryString) {
   //left,top,right,bottom
-  if (edgeInsetsGeometryString == null ||
-      edgeInsetsGeometryString.trim() == '') {
+  if (edgeInsetsGeometryString == null || edgeInsetsGeometryString.trim() == '') {
     return null;
   }
   var values = edgeInsetsGeometryString.split(",");
@@ -461,14 +458,10 @@ MainAxisSize parseMainAxisSize(String? mainAxisSizeString) =>
     mainAxisSizeString == 'min' ? MainAxisSize.min : MainAxisSize.max;
 
 TextBaseline parseTextBaseline(String? parseTextBaselineString) =>
-    'alphabetic' == parseTextBaselineString
-        ? TextBaseline.alphabetic
-        : TextBaseline.ideographic;
+    'alphabetic' == parseTextBaselineString ? TextBaseline.alphabetic : TextBaseline.ideographic;
 
 VerticalDirection parseVerticalDirection(String? verticalDirectionString) =>
-    'up' == verticalDirectionString
-        ? VerticalDirection.up
-        : VerticalDirection.down;
+    'up' == verticalDirectionString ? VerticalDirection.up : VerticalDirection.down;
 
 String? exportBlendMode(BlendMode? blendMode) {
   if (blendMode == null) {
@@ -723,8 +716,8 @@ Rect? parseRect(String? fromLTRBString) {
     return null;
   }
   var strings = fromLTRBString.split(',');
-  return Rect.fromLTRB(double.parse(strings[0]), double.parse(strings[1]),
-      double.parse(strings[2]), double.parse(strings[3]));
+  return Rect.fromLTRB(
+      double.parse(strings[0]), double.parse(strings[1]), double.parse(strings[2]), double.parse(strings[3]));
 }
 
 String exportRect(Rect rect) {
@@ -773,17 +766,9 @@ String? getLoadMoreUrl(String? url, int currentNo, int? pageSize) {
 
   url = url.trim();
   if (url.contains("?")) {
-    url = url +
-        "&startNo=" +
-        currentNo.toString() +
-        "&pageSize=" +
-        pageSize.toString();
+    url = url + "&startNo=" + currentNo.toString() + "&pageSize=" + pageSize.toString();
   } else {
-    url = url +
-        "?startNo=" +
-        currentNo.toString() +
-        "&pageSize=" +
-        pageSize.toString();
+    url = url + "?startNo=" + currentNo.toString() + "&pageSize=" + pageSize.toString();
   }
   return url;
 }
@@ -1019,21 +1004,18 @@ String exportDropCapPosition(DropCapPosition? dropCapPosition) {
   return rt;
 }
 
-DropCap? parseDropCap(Map<String, dynamic>? map, BuildContext buildContext,
-    ClickListener? listener) {
+DropCap? parseDropCap(Map<String, dynamic>? map, BuildContext buildContext, ClickListener? listener) {
   if (map == null) {
     return null;
   }
   return DropCap(
     width: map['width']?.toDouble(),
     height: map['height']?.toDouble(),
-    child:
-        DynamicWidgetBuilder.buildFromMap(map["child"], buildContext, listener),
+    child: sl<DynamicWidgetBuilder>().buildFromMap(map["child"], buildContext, listener),
   );
 }
 
-Map<String, dynamic>? exportDropCap(
-    DropCap? dropCap, BuildContext? buildContext) {
+Map<String, dynamic>? exportDropCap(DropCap? dropCap, BuildContext? buildContext) {
   if (dropCap == null) {
     return null;
   }
@@ -1129,13 +1111,9 @@ String exportAlignment(Alignment? alignment) {
 Map<String, dynamic> exportConstraints(BoxConstraints constraints) {
   return {
     'minWidth': constraints.minWidth,
-    'maxWidth': constraints.maxWidth == double.infinity
-        ? infinity
-        : constraints.maxWidth,
+    'maxWidth': constraints.maxWidth == double.infinity ? infinity : constraints.maxWidth,
     'minHeight': constraints.minHeight,
-    'maxHeight': constraints.maxHeight == double.infinity
-        ? infinity
-        : constraints.maxHeight,
+    'maxHeight': constraints.maxHeight == double.infinity ? infinity : constraints.maxHeight,
   };
 }
 
@@ -1192,4 +1170,40 @@ Radius parseRadius(String radius) {
   } else {
     return Radius.zero;
   }
+}
+
+String functionName(Function function) {
+  final functionNameAsAString = function.toString();
+  final s = functionNameAsAString.indexOf("'");
+  final e = functionNameAsAString.lastIndexOf("'");
+  try {
+    return functionNameAsAString.substring(s + 1, e);
+  } catch (e) {
+    return 'anonymous';
+  }
+}
+
+T? s1parse<T extends num>(dynamic str) {
+  if (T == int && (str is String && str.isNotEmpty)) {
+    return int.parse(str) as T;
+  }
+  if (T == double && (str is String && str.isNotEmpty)) {
+    return double.parse(str) as T;
+  }
+  if (T == double && str is double) {
+    return str as T;
+  }
+  if (T == int && str is double) {
+    return str.toInt() as T;
+  }
+  if (T == int && str is int) {
+    return str as T;
+  }
+  if (T == double && str is int) {
+    return str.toDouble() as T;
+  }
+  if (str == null || str.isEmpty) {
+    return null;
+  }
+  return null;
 }

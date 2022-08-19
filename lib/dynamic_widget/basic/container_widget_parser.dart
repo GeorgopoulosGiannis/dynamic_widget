@@ -1,11 +1,11 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class ContainerWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     Alignment? alignment = parseAlignment(map['alignment']);
     Color? color = parseHexColor(map['color']);
     BoxConstraints constraints = parseBoxConstraints(map['constraints']);
@@ -15,10 +15,13 @@ class ContainerWidgetParser extends WidgetParser {
     Map<String, dynamic>? childMap = map['child'];
     Widget? child = childMap == null
         ? null
-        : DynamicWidgetBuilder.buildFromMap(childMap, buildContext, listener);
+        : sl<DynamicWidgetBuilder>().buildFromMap(
+            childMap,
+            buildContext,
+            listener,
+          );
 
-    String? clickEvent =
-        map.containsKey("click_event") ? map['click_event'] : null;
+    String? clickEvent = map.containsKey("click_event") ? map['click_event'] : null;
 
     var containerWidget = Container(
       alignment: alignment,
@@ -54,20 +57,11 @@ class ContainerWidgetParser extends WidgetParser {
     var constraints = realWidget.constraints;
     return <String, dynamic>{
       "type": widgetName,
-      "alignment": realWidget.alignment != null
-          ? exportAlignment(realWidget.alignment as Alignment?)
-          : null,
-      "padding": padding != null
-          ? "${padding.left},${padding.top},${padding.right},${padding.bottom}"
-          : null,
-      "color": realWidget.color != null
-          ? realWidget.color!.value.toRadixString(16)
-          : null,
-      "margin": margin != null
-          ? "${margin.left},${margin.top},${margin.right},${margin.bottom}"
-          : null,
-      "constraints":
-          constraints != null ? exportConstraints(constraints) : null,
+      "alignment": realWidget.alignment != null ? exportAlignment(realWidget.alignment as Alignment?) : null,
+      "padding": padding != null ? "${padding.left},${padding.top},${padding.right},${padding.bottom}" : null,
+      "color": realWidget.color != null ? realWidget.color!.value.toRadixString(16) : null,
+      "margin": margin != null ? "${margin.left},${margin.top},${margin.right},${margin.bottom}" : null,
+      "constraints": constraints != null ? exportConstraints(constraints) : null,
       "child": DynamicWidgetBuilder.export(realWidget.child, buildContext)
     };
   }

@@ -1,6 +1,7 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
 
 class SingleChildScrollViewParser extends WidgetParser {
   @override
@@ -17,19 +18,15 @@ class SingleChildScrollViewParser extends WidgetParser {
       "type": widgetName,
       "scrollDirection": scrollDirection,
       "reverse": realWidget.reverse,
-      "padding": padding != null
-          ? "${padding.left},${padding.top},${padding.right},${padding.bottom}"
-          : null,
+      "padding": padding != null ? "${padding.left},${padding.top},${padding.right},${padding.bottom}" : null,
       "child": DynamicWidgetBuilder.export(realWidget.child, buildContext),
     };
   }
 
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     var scrollDirection = Axis.vertical;
-    if (map.containsKey("scrollDirection") &&
-        "horizontal" == map["scrollDirection"]) {
+    if (map.containsKey("scrollDirection") && "horizontal" == map["scrollDirection"]) {
       scrollDirection = Axis.horizontal;
     }
 
@@ -37,11 +34,9 @@ class SingleChildScrollViewParser extends WidgetParser {
     return SingleChildScrollView(
       reverse: map.containsKey('reverse') ? map['reverse'] : false,
       clipBehavior: parseClipBehavior(clipBehaviorString),
-      padding: map.containsKey("padding")
-          ? parseEdgeInsetsGeometry(map["padding"])!
-          : EdgeInsets.zero,
+      padding: map.containsKey("padding") ? parseEdgeInsetsGeometry(map["padding"])! : EdgeInsets.zero,
       scrollDirection: scrollDirection,
-      child: DynamicWidgetBuilder.buildFromMap(
+      child: sl<DynamicWidgetBuilder>().buildFromMap(
         map['child'],
         buildContext,
         listener,

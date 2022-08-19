@@ -1,7 +1,8 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/common/rounded_rectangle_border_parser.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+import '../../dynamic_widget.dart';
+import '../common/rounded_rectangle_border_parser.dart';
+import '../utils.dart';
 
 class CardParser extends WidgetParser {
   @override
@@ -14,26 +15,18 @@ class CardParser extends WidgetParser {
   Map<String, dynamic>? export(Widget? widget, BuildContext? buildContext) {
     if (widget != null && widget is Card) {
       final EdgeInsets? margin = widget.margin as EdgeInsets?;
-      final String? color =
-          widget.color != null ? widget.color!.value.toRadixString(16) : null;
-      final String? shadowColor = widget.shadowColor != null
-          ? widget.shadowColor!.value.toRadixString(16)
-          : null;
+      final String? color = widget.color != null ? widget.color!.value.toRadixString(16) : null;
+      final String? shadowColor = widget.shadowColor != null ? widget.shadowColor!.value.toRadixString(16) : null;
       final double? elevation = widget.elevation;
       final bool borderOnForeground = widget.borderOnForeground;
-      final String? clipBehavior = widget.clipBehavior != null
-          ? exportClipBehavior(widget.clipBehavior!)
-          : null;
-      final String? strMargin = margin != null
-          ? "${margin.left},${margin.top},${margin.right},${margin.bottom},"
-          : null;
+      final String? clipBehavior = widget.clipBehavior != null ? exportClipBehavior(widget.clipBehavior!) : null;
+      final String? strMargin =
+          margin != null ? "${margin.left},${margin.top},${margin.right},${margin.bottom}," : null;
       final bool semanticContainer = widget.semanticContainer;
-      final Map<String, dynamic>? childMap =
-          DynamicWidgetBuilder.export(widget.child, buildContext);
+      final Map<String, dynamic>? childMap = DynamicWidgetBuilder.export(widget.child, buildContext);
       final Map<String, dynamic>? shape;
       if (widget.shape != null && widget.shape is RoundedRectangleBorder) {
-        shape = RoundedRectangleBorderParser.export(
-            widget.shape as RoundedRectangleBorder);
+        shape = RoundedRectangleBorderParser.export(widget.shape as RoundedRectangleBorder);
       } else
         shape = null;
 
@@ -55,8 +48,7 @@ class CardParser extends WidgetParser {
   }
 
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     final Color? color = parseHexColor(map['color']);
     final Color? shadowColor = parseHexColor(map['shadowColor']);
     final double? elevation = map['elevation'];
@@ -65,11 +57,9 @@ class CardParser extends WidgetParser {
     final bool semanticContainer = map['semanticContainer'];
     final Clip clipBehavior = parseClipBehavior(map['clipBehavior']);
     final Map<String, dynamic>? childMap = map['child'];
-    final Widget? child = childMap == null
-        ? null
-        : DynamicWidgetBuilder.buildFromMap(childMap, buildContext, listener);
-    final RoundedRectangleBorder? shape =
-        RoundedRectangleBorderParser.parse(map['shape']);
+    final Widget? child =
+        childMap == null ? null : sl<DynamicWidgetBuilder>().buildFromMap(childMap, buildContext, listener);
+    final RoundedRectangleBorder? shape = RoundedRectangleBorderParser.parse(map['shape']);
 
     var card = Card(
       color: color,

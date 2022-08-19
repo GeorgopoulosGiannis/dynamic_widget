@@ -1,17 +1,18 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
+import '../../dynamic_widget.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
 
 class BaselineWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Baseline(
       baseline: map["baseline"]?.toDouble(),
-      baselineType: map["baselineType"] == "alphabetic"
-          ? TextBaseline.alphabetic
-          : TextBaseline.ideographic,
-      child: DynamicWidgetBuilder.buildFromMap(
-          map["child"], buildContext, listener),
+      baselineType: map["baselineType"] == "alphabetic" ? TextBaseline.alphabetic : TextBaseline.ideographic,
+      child: sl<DynamicWidgetBuilder>().buildFromMap(
+        map["child"],
+        buildContext,
+        listener,
+      ),
     );
   }
 
@@ -24,9 +25,7 @@ class BaselineWidgetParser extends WidgetParser {
     return <String, dynamic>{
       "type": widgetName,
       "baseline": realWidget.baseline,
-      "baselineType": realWidget.baselineType == TextBaseline.alphabetic
-          ? "alphabetic"
-          : "ideographic",
+      "baselineType": realWidget.baselineType == TextBaseline.alphabetic ? "alphabetic" : "ideographic",
       "child": DynamicWidgetBuilder.export(realWidget.child, buildContext)
     };
   }

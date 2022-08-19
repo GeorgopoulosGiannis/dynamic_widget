@@ -6,31 +6,24 @@ import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:soft1_presentation/soft1_presentation.dart';
 
 class ListViewWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     var scrollDirection = Axis.vertical;
-    if (map.containsKey("scrollDirection") &&
-        "horizontal" == map["scrollDirection"]) {
+    if (map.containsKey("scrollDirection") && "horizontal" == map["scrollDirection"]) {
       scrollDirection = Axis.horizontal;
     }
 
     var reverse = map.containsKey("reverse") ? map['reverse'] : false;
     var shrinkWrap = map.containsKey("shrinkWrap") ? map["shrinkWrap"] : false;
-    var cacheExtent =
-        map.containsKey("cacheExtent") ? map["cacheExtent"]?.toDouble() : 0.0;
-    var padding = map.containsKey('padding')
-        ? parseEdgeInsetsGeometry(map['padding'])
-        : null;
-    var itemExtent =
-        map.containsKey("itemExtent") ? map["itemExtent"]?.toDouble() : null;
-    var children = DynamicWidgetBuilder.buildWidgets(
-        map['children'], buildContext, listener);
+    var cacheExtent = map.containsKey("cacheExtent") ? map["cacheExtent"]?.toDouble() : 0.0;
+    var padding = map.containsKey('padding') ? parseEdgeInsetsGeometry(map['padding']) : null;
+    var itemExtent = map.containsKey("itemExtent") ? map["itemExtent"]?.toDouble() : null;
+    var children = sl<DynamicWidgetBuilder>().buildWidgets(map['children'], buildContext, listener);
     var pageSize = map.containsKey("pageSize") ? map["pageSize"] : 10;
-    var loadMoreUrl =
-        map.containsKey("loadMoreUrl") ? map["loadMoreUrl"] : null;
+    var loadMoreUrl = map.containsKey("loadMoreUrl") ? map["loadMoreUrl"] : null;
     var isDemo = map.containsKey("isDemo") ? map["isDemo"] : false;
 
     var params = new ListViewParams(
@@ -60,23 +53,19 @@ class ListViewWidgetParser extends WidgetParser {
     }
 
     var padding = realWidget._params.padding as EdgeInsets?;
-    var tempChild =
-        DynamicWidgetBuilder.export(widget._params.tempChild, buildContext);
+    var tempChild = DynamicWidgetBuilder.export(widget._params.tempChild, buildContext);
     return <String, dynamic>{
       "type": "ListView",
       "scrollDirection": scrollDirection,
       "reverse": realWidget._params.reverse ?? false,
       "shrinkWrap": realWidget._params.shrinkWrap ?? false,
       "cacheExtent": realWidget._params.cacheExtent ?? 0.0,
-      "padding": padding != null
-          ? "${padding.left},${padding.top},${padding.right},${padding.bottom}"
-          : null,
+      "padding": padding != null ? "${padding.left},${padding.top},${padding.right},${padding.bottom}" : null,
       "itemExtent": realWidget._params.itemExtent ?? null,
       "pageSize": realWidget._params.pageSize ?? 10,
       "loadMoreUrl": realWidget._params.loadMoreUrl ?? null,
       "isDemo": realWidget._params.isDemo ?? false,
-      "children": DynamicWidgetBuilder.exportWidgets(
-          realWidget._params.children ?? [], buildContext),
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget._params.children ?? [], buildContext),
       "tempChild": tempChild,
       "dataKey": realWidget._params.dataKey,
     };
@@ -121,9 +110,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
       return;
     }
     _scrollController.addListener(() {
-      if (!loadCompleted &&
-          _scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent) {
+      if (!loadCompleted && _scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _getMoreData();
       }
     });
@@ -132,10 +119,8 @@ class _ListViewWidgetState extends State<ListViewWidget> {
   _getMoreData() async {
     if (!isPerformingRequest) {
       setState(() => isPerformingRequest = true);
-      var jsonString =
-          _params.isDemo! ? await fakeRequest() : await doRequest();
-      var buildWidgets = DynamicWidgetBuilder.buildWidgets(
-          jsonDecode(jsonString), widget._buildContext, null);
+      var jsonString = _params.isDemo! ? await fakeRequest() : await doRequest();
+      var buildWidgets = sl<DynamicWidgetBuilder>().buildWidgets(jsonDecode(jsonString), widget._buildContext, null);
       setState(() {
         if (buildWidgets.isEmpty) {
           loadCompleted = true;
@@ -217,8 +202,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
   doRequest() async {
     // Await the http get response, then decode the json-formatted responce.
     try {
-      var response = await http.get(Uri.parse(getLoadMoreUrl(
-          _params.loadMoreUrl, _items.length, _params.pageSize)!));
+      var response = await http.get(Uri.parse(getLoadMoreUrl(_params.loadMoreUrl, _items.length, _params.pageSize)!));
       if (response.statusCode == 200) {
         return response.body;
       }

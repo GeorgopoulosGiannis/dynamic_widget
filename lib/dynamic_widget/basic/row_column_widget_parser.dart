@@ -1,12 +1,12 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:soft1_presentation/soft1_presentation.dart';
+
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class RowWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
-
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Row(
       crossAxisAlignment: map.containsKey('crossAxisAlignment')
           ? parseCrossAxisAlignment(map['crossAxisAlignment'])
@@ -14,20 +14,13 @@ class RowWidgetParser extends WidgetParser {
       mainAxisAlignment: map.containsKey('mainAxisAlignment')
           ? parseMainAxisAlignment(map['mainAxisAlignment'])
           : MainAxisAlignment.start,
-      mainAxisSize: map.containsKey('mainAxisSize')
-          ? parseMainAxisSize(map['mainAxisSize'])
-          : MainAxisSize.max,
-      textBaseline: map.containsKey('textBaseline')
-          ? parseTextBaseline(map['textBaseline'])
-          : null,
-      textDirection: map.containsKey('textDirection')
-          ? parseTextDirection(map['textDirection'])
-          : null,
+      mainAxisSize: map.containsKey('mainAxisSize') ? parseMainAxisSize(map['mainAxisSize']) : MainAxisSize.max,
+      textBaseline: map.containsKey('textBaseline') ? parseTextBaseline(map['textBaseline']) : null,
+      textDirection: map.containsKey('textDirection') ? parseTextDirection(map['textDirection']) : null,
       verticalDirection: map.containsKey('verticalDirection')
           ? parseVerticalDirection(map['verticalDirection'])
           : VerticalDirection.down,
-      children: DynamicWidgetBuilder.buildWidgets(
-          map['children'], buildContext, listener),
+      children: sl<DynamicWidgetBuilder>().buildWidgets(map['children'], buildContext, listener),
     );
   }
 
@@ -39,24 +32,13 @@ class RowWidgetParser extends WidgetParser {
     var realWidget = widget as Row;
     return <String, dynamic>{
       "type": "Row",
-      "crossAxisAlignment":
-          exportCrossAxisAlignment(realWidget.crossAxisAlignment),
-      "mainAxisAlignment":
-          exportMainAxisAlignment(realWidget.mainAxisAlignment),
-      "mainAxisSize":
-          realWidget.mainAxisSize == MainAxisSize.max ? "max" : "min",
-      "textBaseline": realWidget.textBaseline == TextBaseline.alphabetic
-          ? "alphabetic"
-          : "ideographic",
-      "textDirection": realWidget.textDirection != null
-          ? exportTextDirection(realWidget.textDirection)
-          : null,
-      "verticalDirection":
-          realWidget.verticalDirection == VerticalDirection.down
-              ? "down"
-              : "up",
-      "children":
-          DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext),
+      "crossAxisAlignment": exportCrossAxisAlignment(realWidget.crossAxisAlignment),
+      "mainAxisAlignment": exportMainAxisAlignment(realWidget.mainAxisAlignment),
+      "mainAxisSize": realWidget.mainAxisSize == MainAxisSize.max ? "max" : "min",
+      "textBaseline": realWidget.textBaseline == TextBaseline.alphabetic ? "alphabetic" : "ideographic",
+      "textDirection": realWidget.textDirection != null ? exportTextDirection(realWidget.textDirection) : null,
+      "verticalDirection": realWidget.verticalDirection == VerticalDirection.down ? "down" : "up",
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext),
     };
   }
 
@@ -66,9 +48,7 @@ class RowWidgetParser extends WidgetParser {
 
 class ColumnWidgetParser extends WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
-
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     return Column(
       crossAxisAlignment: map.containsKey('crossAxisAlignment')
           ? parseCrossAxisAlignment(map['crossAxisAlignment'])
@@ -76,20 +56,13 @@ class ColumnWidgetParser extends WidgetParser {
       mainAxisAlignment: map.containsKey('mainAxisAlignment')
           ? parseMainAxisAlignment(map['mainAxisAlignment'])
           : MainAxisAlignment.start,
-      mainAxisSize: map.containsKey('mainAxisSize')
-          ? parseMainAxisSize(map['mainAxisSize'])
-          : MainAxisSize.max,
-      textBaseline: map.containsKey('textBaseline')
-          ? parseTextBaseline(map['textBaseline'])
-          : null,
-      textDirection: map.containsKey('textDirection')
-          ? parseTextDirection(map['textDirection'])
-          : null,
+      mainAxisSize: map.containsKey('mainAxisSize') ? parseMainAxisSize(map['mainAxisSize']) : MainAxisSize.max,
+      textBaseline: map.containsKey('textBaseline') ? parseTextBaseline(map['textBaseline']) : null,
+      textDirection: map.containsKey('textDirection') ? parseTextDirection(map['textDirection']) : null,
       verticalDirection: map.containsKey('verticalDirection')
           ? parseVerticalDirection(map['verticalDirection'])
           : VerticalDirection.down,
-      children: DynamicWidgetBuilder.buildWidgets(
-          map['children'], buildContext, listener),
+      children: sl<DynamicWidgetBuilder>().buildWidgets(map['children'], buildContext, listener),
     );
   }
 
@@ -101,24 +74,13 @@ class ColumnWidgetParser extends WidgetParser {
     var realWidget = widget as Column;
     return <String, dynamic>{
       "type": "Column",
-      "crossAxisAlignment":
-          exportCrossAxisAlignment(realWidget.crossAxisAlignment),
-      "mainAxisAlignment":
-          exportMainAxisAlignment(realWidget.mainAxisAlignment),
-      "mainAxisSize":
-          realWidget.mainAxisSize == MainAxisSize.max ? "max" : "min",
-      "textBaseline": realWidget.textBaseline == TextBaseline.alphabetic
-          ? "alphabetic"
-          : "ideographic",
-      "textDirection": realWidget.textDirection != null
-          ? exportTextDirection(realWidget.textDirection)
-          : null,
-      "verticalDirection":
-          realWidget.verticalDirection == VerticalDirection.down
-              ? "down"
-              : "up",
-      "children":
-          DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext),
+      "crossAxisAlignment": exportCrossAxisAlignment(realWidget.crossAxisAlignment),
+      "mainAxisAlignment": exportMainAxisAlignment(realWidget.mainAxisAlignment),
+      "mainAxisSize": realWidget.mainAxisSize == MainAxisSize.max ? "max" : "min",
+      "textBaseline": realWidget.textBaseline == TextBaseline.alphabetic ? "alphabetic" : "ideographic",
+      "textDirection": realWidget.textDirection != null ? exportTextDirection(realWidget.textDirection) : null,
+      "verticalDirection": realWidget.verticalDirection == VerticalDirection.down ? "down" : "up",
+      "children": DynamicWidgetBuilder.exportWidgets(realWidget.children, buildContext),
     };
   }
 
