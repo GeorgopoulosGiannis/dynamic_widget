@@ -10,8 +10,8 @@ class DynamicWidgetJsonExportor extends StatelessWidget {
 
   DynamicWidgetJsonExportor({
     this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class DynamicWidgetJsonExportor extends StatelessWidget {
 
   String exportJsonString() {
     String rt = "failed to export";
+
     globalKey.currentContext!.visitChildElements((element) {
       rt = jsonEncode(DynamicWidgetBuilder.export(element.widget, null));
     });

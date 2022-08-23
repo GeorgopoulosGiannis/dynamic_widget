@@ -1,7 +1,8 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
+
 import 'package:flutter/material.dart';
 import 'package:soft1_presentation/soft1_presentation.dart';
+import '../utils.dart';
 
 class AppBarWidgetParser extends WidgetParser {
   @override
@@ -29,13 +30,11 @@ class AppBarWidgetParser extends WidgetParser {
       leading: map.containsKey("leading")
           ? sl<DynamicWidgetBuilder>().buildFromMap(map["leading"], buildContext, listener)
           : null,
-      actions: map.containsKey("actions")
-          ? sl<DynamicWidgetBuilder>().buildWidgets(
-              map["actions"],
-              buildContext,
-              listener,
-            )
-          : null,
+      actions: sl<DynamicWidgetBuilder>().buildWidgets(
+        map["actions"] ?? [],
+        buildContext,
+        listener,
+      ),
       centerTitle: map.containsKey("centerTitle") ? map["centerTitle"] as bool? : false,
       backgroundColor: map.containsKey("backgroundColor") ? parseHexColor(map["backgroundColor"]) : null,
     );

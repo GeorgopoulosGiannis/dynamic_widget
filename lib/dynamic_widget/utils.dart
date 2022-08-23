@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:dynamic_widget/dynamic_widget/drop_cap_text.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:soft1_presentation/soft1_presentation.dart';
 

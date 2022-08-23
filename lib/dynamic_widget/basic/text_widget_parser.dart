@@ -1,12 +1,11 @@
-import 'package:dynamic_widget/dynamic_widget.dart';
-import 'package:dynamic_widget/dynamic_widget/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
+import '../../dynamic_widget.dart';
+import '../utils.dart';
 
 class TextWidgetParser implements WidgetParser {
   @override
-  Widget parse(Map<String, dynamic> map, BuildContext buildContext,
-      ClickListener? listener) {
+  Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
     String? data = map['data'];
     String? textAlignString = map['textAlign'];
     String? overflow = map['overflow'];
@@ -58,9 +57,7 @@ class TextWidgetParser implements WidgetParser {
       return <String, dynamic>{
         "type": "Text",
         "data": realWidget.data,
-        "textAlign": realWidget.textAlign != null
-            ? exportTextAlign(realWidget.textAlign)
-            : "start",
+        "textAlign": realWidget.textAlign != null ? exportTextAlign(realWidget.textAlign) : "start",
         "overflow": exportTextOverflow(realWidget.overflow),
         "maxLines": realWidget.maxLines,
         "semanticsLabel": realWidget.semanticsLabel,
@@ -74,9 +71,7 @@ class TextWidgetParser implements WidgetParser {
       return <String, dynamic>{
         "type": "Text",
         "textSpan": parser.export(realWidget.textSpan as TextSpan),
-        "textAlign": realWidget.textAlign != null
-            ? exportTextAlign(realWidget.textAlign)
-            : "start",
+        "textAlign": realWidget.textAlign != null ? exportTextAlign(realWidget.textAlign) : "start",
         "overflow": exportTextOverflow(realWidget.overflow),
         "maxLines": realWidget.maxLines,
         "semanticsLabel": realWidget.semanticsLabel,
@@ -122,8 +117,7 @@ class TextSpanParser {
     };
   }
 
-  void parseChildren(
-      TextSpan textSpan, List<dynamic> childrenSpan, ClickListener? listener) {
+  void parseChildren(TextSpan textSpan, List<dynamic> childrenSpan, ClickListener? listener) {
     for (var childmap in childrenSpan) {
       textSpan.children!.add(parse(childmap, listener));
     }

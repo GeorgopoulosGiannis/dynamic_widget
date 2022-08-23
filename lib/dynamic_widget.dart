@@ -1,7 +1,6 @@
 library dynamic_widget;
 
 export 'dynamic_widget/basic/dynamic_widget_json_exportor.dart';
-export 'dynamic_designer_widget_builder.dart';
 
 import 'dart:convert';
 
@@ -12,6 +11,7 @@ import 'dynamic_widget/basic/baseline_widget_parser.dart';
 import 'dynamic_widget/basic/button_widget_parser.dart';
 import 'dynamic_widget/basic/card_widget_parser.dart';
 import 'dynamic_widget/basic/center_widget_parser.dart';
+import 'dynamic_widget/basic/constrained_box_widget_parser.dart';
 import 'dynamic_widget/basic/container_widget_parser.dart';
 import 'dynamic_widget/basic/divider_widget_parser.dart';
 import 'dynamic_widget/basic/dropcaptext_widget_parser.dart';
@@ -27,13 +27,14 @@ import 'dynamic_widget/basic/offstage_widget_parser.dart';
 import 'dynamic_widget/basic/opacity_widget_parser.dart';
 import 'dynamic_widget/basic/padding_widget_parser.dart';
 import 'dynamic_widget/basic/placeholder_widget_parser.dart';
-import 'dynamic_widget/basic/preview_target_widget_parser.dart';
+
 import 'dynamic_widget/basic/row_column_widget_parser.dart';
 import 'dynamic_widget/basic/safearea_widget_parser.dart';
 import 'dynamic_widget/basic/scaffold_widget_parser.dart';
 import 'dynamic_widget/basic/selectabletext_widget_parser.dart';
 import 'dynamic_widget/basic/sizedbox_widget_parser.dart';
 import 'dynamic_widget/basic/stack_positioned_widgets_parser.dart';
+import 'dynamic_widget/basic/text_field_widget_parser.dart';
 import 'dynamic_widget/basic/text_widget_parser.dart';
 import 'dynamic_widget/basic/wrap_widget_parser.dart';
 import 'dynamic_widget/composite/pages/page_base_parser.dart';
@@ -53,12 +54,12 @@ class DynamicWidgetBuilder {
 
   static final _parsers = [
     PageBaseParser(),
-    PreviewTargetWidgetParser(),
     FloatingActionParser(),
+    TextFieldWidgetParser(),
     ContainerWidgetParser(),
+    ConstrainedBoxWidgetParser(),
     TextWidgetParser(),
     SelectableTextWidgetParser(),
-    RaisedButtonParser(),
     RowWidgetParser(),
     ColumnWidgetParser(),
     AssetImageWidgetParser(),

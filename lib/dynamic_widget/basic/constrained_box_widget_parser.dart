@@ -1,28 +1,29 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:soft1_presentation/soft1_presentation.dart';
 
 import '../../dynamic_widget.dart';
-import '../widgets/preview_target.dart';
+import '../utils.dart';
 
-class PreviewTargetWidgetParser extends WidgetParser {
+class ConstrainedBoxWidgetParser extends WidgetParser {
   @override
-  String get widgetName => 'PreviewTarget';
+  String get widgetName => 'ConstrainedBox';
 
   @override
-  Type get widgetType => PreviewTarget;
-
+  Type get widgetType => ConstrainedBox;
   @override
   Map<String, dynamic>? export(Widget? widget, BuildContext? buildContext) {
-    final realWidget = widget as PreviewTarget;
+    final realWidget = widget as ConstrainedBox;
     return {
       'type': widgetName,
+      'constraints': exportConstraints(realWidget.constraints),
       'child': DynamicWidgetBuilder.export(realWidget.child, buildContext),
     };
   }
 
   @override
   Widget parse(Map<String, dynamic> map, BuildContext buildContext, ClickListener? listener) {
-    return PreviewTarget(
+    return ConstrainedBox(
+      constraints: parseBoxConstraints(map['constraints']),
       child: sl<DynamicWidgetBuilder>().buildFromMap(map['child'], buildContext, listener),
     );
   }
